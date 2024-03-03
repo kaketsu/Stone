@@ -1,2 +1,2 @@
 # Stone
-Stone
+init
