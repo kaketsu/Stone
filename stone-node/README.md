@@ -21,3 +21,9 @@ https://www.pgadmin.org/download/
 
 # mysql
 https://dev.mysql.com/downloads/mysql/
+
+
+
+$ nest g mo modules/user
+$ nest g co modules/user
+$ nest g s modules/user

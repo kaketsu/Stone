@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Sector } from 'src/sector/entities/sector.entity';
+// import { Sector } from 'src/sector/entities/sector.entity';
 
 @Entity()
 @ObjectType()
@@ -15,11 +15,13 @@ export class Stock {
   @Column()
   stockName: string;
 
+  // @ManyToOne(() => Sector, (post: Sector) => post.sectorId)
   @Column()
-  mainSector: Sector;
+  mainSector: string;
 
+  // @ManyToOne(() => Sector, (post: Sector) => post.sectorId)
   @Column()
-  subSector: Sector;
+  subSector: string;
 
   @Column({ default: true })
   isActive: boolean;

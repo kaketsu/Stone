@@ -16,8 +16,9 @@ export class SectorResolver {
 
   @Query(() => Sector)
   async Sector() {
+    // return { world: 'Hello, world' };
     const Sectors = await this.sectorService.findAll();
-    return Sectors.length > 0 ? Sectors[0] : null;
+    return Sectors.length > 0 ? Sectors : [];
   }
 
   // @Mutation(() => Sector)

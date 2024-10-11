@@ -1,6 +1,14 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Stock } from '../../stock/entities/stock.entitiy';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Stock } from '../../stock/entities/stock.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -25,15 +33,11 @@ export class Sector {
   @Field()
   isSub: boolean;
 
-  @Column({ default: '' })
-  @Field()
+  @ManyToOne(() => Sector, (post: Sector) => post.sectorId)
+  @Field(() => Sector)
   mainSector: string;
 
-  // @Column({ default: true })
-  // @Field()
-  // isActive: boolean;
-
-  // @OneToMany(() => Stock, (post) => post.stockName)
-  // @Field(() => [Stock])
-  // stocks: Stock[];
+  @OneToMany(() => Stock, (post: Stock) => post.stockName)
+  @Field(() => [Stock])
+  stocks: Stock[];
 }

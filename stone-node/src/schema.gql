@@ -2,10 +2,31 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Dashboard {
+  id: ID!
+}
+
 type Hello {
   world: String!
 }
 
 type Query {
+  Dashboard: Dashboard!
+  Sector: Sector!
+  Stock: Stock!
   hello: Hello!
+}
+
+type Sector {
+  isMain: Boolean!
+  isSub: Boolean!
+  mainSector: Sector!
+  sectorDesc: String!
+  sectorId: ID!
+  sectorName: String!
+  stocks: [Stock!]!
+}
+
+type Stock {
+  stockId: ID!
 }
