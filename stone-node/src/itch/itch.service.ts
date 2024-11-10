@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
+import { DashboardService } from 'src/dashboard/dashboard.service';
 @Injectable()
 export class ItchService {
-  constructor() {}
+  constructor(private dashboardService: DashboardService) {}
 
   async startPuppeteer() {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto('https://developer.chrome.com/');
+    await page.goto('https://www.tencent.com');
 
     // Set screen size
     await page.setViewport({ width: 1080, height: 1024 });
@@ -32,15 +33,24 @@ export class ItchService {
     await browser.close();
   }
 
-  async startPuppeteer2() {
+  async crawlDashboard() {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto('https://developer.chrome.com/');
+    await page.goto('https://juejin.cn/');
 
     // Set screen size
-    await page.setViewport({ width: 1080, height: 1024 });
+    await page.setViewport({ width: 1920, height: 1080 });
 
-    // Type into search box
-    await page.type('.devsite-search-field', 'automate beyond recorder');
+    await page.waitForSelector('.entry-list');
+    await page.screenshot({ path: 'picture.png' });
+    const titleDom = await page.$$('div.title-row > a');
+
+    console.log(titleDom);
+
+    // const crawlDashboardData = {};
+
+    // this.dashboardService.createDashboard(crawlDashboardData);
+
+    // 能不能用这个做一个热度的加权
   }
 }

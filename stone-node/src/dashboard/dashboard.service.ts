@@ -27,6 +27,7 @@ export class DashboardService {
     dashboard.limitDownCountBeforeCallAuction =
       createDashboardDto.limitDownCountBeforeCallAuction;
     dashboard.redStockCount = createDashboardDto.redStockCount;
+    dashboard.heat = createDashboardDto.heat;
 
     return this.dashboardRepository.save(dashboard);
   }
@@ -53,5 +54,11 @@ export class DashboardService {
 
   removeDashboard(dashboardId: number): Promise<{ affected?: number }> {
     return this.dashboardRepository.delete(dashboardId);
+  }
+
+  calculateHeatValue(createDashboardDto: CreateDashboardDto): number {
+    // Implement the logic to calculate the heat value
+    // This is a placeholder implementation
+    return Math.random() * 100;
   }
 }

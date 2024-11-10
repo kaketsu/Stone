@@ -9,6 +9,7 @@ import { SectorModule } from './sector/sector.module';
 import { StockModule } from './stock/stock.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ItchModule } from './itch/itch.module';
+import { SectorTrendModule } from './sector-trend/sector-trend.module';
 @Module({
   imports: [
     HelloModule,
@@ -57,6 +58,7 @@ import { ItchModule } from './itch/itch.module';
       //   ],
       // },
     }),
+    SectorTrendModule,
   ],
 })
 export class AppModule {}

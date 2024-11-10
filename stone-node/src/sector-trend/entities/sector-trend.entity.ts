@@ -4,7 +4,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType()
-export class Dashboard {
+export class SectorTrend {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => ID)
   id: string;

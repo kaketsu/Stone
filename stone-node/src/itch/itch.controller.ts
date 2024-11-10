@@ -6,6 +6,6 @@ export class ItchController {
 
   @Get()
   findAll() {
-    return this.itchService.startPuppeteer();
+    return this.itchService.crawlDashboard();
   }
 }

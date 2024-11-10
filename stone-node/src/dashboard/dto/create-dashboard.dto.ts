@@ -40,22 +40,9 @@ export class CreateDashboardDto {
 
   @IsNumber()
   redStockRadio: number;
-  // 成交额
 
-  // 涨停个数
-  // 10%涨停个数
-  // 20%涨停个数
-  // 30%涨停个数
-  // 集合竞价涨停
-
-  // 跌停个数
-  // 10%跌停个数
-  // 20%跌停个数
-  // 30%跌停个数
-  // 集合竞价跌停
-
-  // 红盘个数
-  // 红盘比例
+  @IsNumber()
+  heat: number;
 
   // @IsString()
   // dashboardCode: string;
