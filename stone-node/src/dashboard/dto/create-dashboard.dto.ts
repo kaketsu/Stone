@@ -6,10 +6,34 @@ import { IsNotEmpty, IsDate, IsNumber } from 'class-validator';
 export class CreateDashboardDto {
   @IsDate()
   @IsNotEmpty()
-  openDate: Date;
+  date: Date;
 
   @IsNumber()
   tradingVolume: number;
+
+  @IsNumber()
+  tradingVolume1: number; //上
+
+  @IsNumber()
+  tradingVolume2: number; //深
+
+  @IsNumber()
+  tradingVolume3: number; //创
+
+  @IsNumber()
+  tradingVolume4: number; //北
+
+  @IsNumber()
+  percentageChange1: number;
+
+  @IsNumber()
+  percentageChange2: number;
+
+  @IsNumber()
+  percentageChange3: number;
+
+  @IsNumber()
+  percentageChange4: number;
 
   @IsNumber()
   limitUpCount1: number;
@@ -37,9 +61,6 @@ export class CreateDashboardDto {
 
   @IsNumber()
   redStockCount: number;
-
-  @IsNumber()
-  redStockRadio: number;
 
   @IsNumber()
   heat: number;

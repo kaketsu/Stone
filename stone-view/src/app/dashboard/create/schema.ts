@@ -1,7 +1,7 @@
 export const schema = {
   type: "object",
   properties: {
-    openDate: {
+    date: {
       type: "Date",
       title: "日期",
       "x-decorator": "FormItem",

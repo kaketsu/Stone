@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Dashboard } from './entities/dashboard.entity';
 import { CreateDashboardDto } from './dto/create-dashboard.dto';
 
@@ -14,8 +14,18 @@ export class DashboardService {
   createDashboard(createDashboardDto: CreateDashboardDto) {
     const dashboard: Dashboard = new Dashboard();
 
-    dashboard.openDate = createDashboardDto.openDate;
+    dashboard.date = createDashboardDto.date;
     dashboard.tradingVolume = createDashboardDto.tradingVolume;
+    dashboard.tradingVolume1 = createDashboardDto.tradingVolume1;
+    dashboard.tradingVolume2 = createDashboardDto.tradingVolume2;
+    dashboard.tradingVolume3 = createDashboardDto.tradingVolume3;
+    dashboard.tradingVolume4 = createDashboardDto.tradingVolume4;
+
+    dashboard.percentageChange1 = createDashboardDto.percentageChange1;
+    dashboard.percentageChange2 = createDashboardDto.percentageChange2;
+    dashboard.percentageChange3 = createDashboardDto.percentageChange3;
+    dashboard.percentageChange4 = createDashboardDto.percentageChange4;
+
     dashboard.limitUpCount1 = createDashboardDto.limitUpCount1;
     dashboard.limitUpCount2 = createDashboardDto.limitUpCount2;
     dashboard.limitUpCount3 = createDashboardDto.limitUpCount3;
@@ -39,26 +49,32 @@ export class DashboardService {
   findDashboard(id: string): Promise<Dashboard> {
     return this.dashboardRepository.findOneBy({ id });
   }
+  async findDashboardByDate(date: Date): Promise<Dashboard> {
+    return this.dashboardRepository.findOneBy({ date });
+  }
 
-  // updateDashboard(
-  //   id: number,
-  //   updateDashboardDto: UpdateDashboardDto,
-  // ): Promise<Dashboard> {
-  //   const dashboard: Dashboard = new Dashboard();
-  //   dashboard.openDate = updateDashboardDto.openDate;
-  //   // dashboard.dashboardCode = updateDashboardDto.dashboardCode;
-  //   // dashboard.mainSector = updateDashboardDto.mainSector;
-  //   // dashboard.subSector = updateDashboardDto.subSector;
-  //   return this.dashboardRepository.save(dashboard);
-  // }
+  async updateDashboard(
+    id: string,
+    updateDashboardDto: CreateDashboardDto,
+  ): Promise<UpdateResult> {
+    console.log(updateDashboardDto);
+    // const dashboard: Dashboard = new Dashboard();
+    // dashboard.date = updateDashboardDto.date;
+    // const currentDashboard = await this.findDashboardByDate(date);
+
+    // dashboard.mainSector = updateDashboardDto.mainSector;
+    // dashboard.subSector = updateDashboardDto.subSector;
+
+    return this.dashboardRepository.update(id, updateDashboardDto);
+  }
 
   removeDashboard(dashboardId: number): Promise<{ affected?: number }> {
     return this.dashboardRepository.delete(dashboardId);
   }
 
-  calculateHeatValue(createDashboardDto: CreateDashboardDto): number {
-    // Implement the logic to calculate the heat value
-    // This is a placeholder implementation
-    return Math.random() * 100;
-  }
+  // calculateHeatValue(createDashboardDto: CreateDashboardDto): number {
+  //   // Implement the logic to calculate the heat value
+  //   // This is a placeholder implementation
+  //   return Math.random() * 100;
+  // }
 }

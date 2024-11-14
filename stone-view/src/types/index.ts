@@ -1,5 +1,5 @@
 export interface Dashboard {
-  openDate: string;
+  date: string;
   tradingVolume: number;
   limitUpCount1: number;
   limitUpCount2: number;

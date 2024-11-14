@@ -10,7 +10,7 @@ export class SectorTrend {
   id: string;
 
   @Column()
-  openDate: Date;
+  date: Date;
 
   @Column()
   tradingVolume: number;

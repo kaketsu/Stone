@@ -23,7 +23,7 @@ export default function DashboardPage() {
 
   const config = {
     data,
-    xField: 'openDate',
+    xField: 'date',
     yField: 'tradingVolume',
     xAxis: {
       label: {
