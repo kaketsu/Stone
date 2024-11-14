@@ -1,0 +1,13 @@
+.stoneMenu {
+  height: 100%;
+
+  :global {
+    .ant-menu-item {
+      width: 100% !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      height: 48px !important;
+      line-height: 48px !important;
+    }
+  }
+}
