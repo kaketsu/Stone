@@ -15,3 +15,26 @@ export const getDashboard = async (): Promise<Dashboard[]> => {
     method: "GET",
   });
 };
+
+
+export const getDashboardByDate = async (date: string): Promise<Dashboard> => {
+  return request(`/dashboard/date/${date}`, {
+    method: "GET",
+  });
+};
+
+export const getDashboardByDateRange = async (startDate:string, endDate: string):Promise<Dashboard[]> => {
+  return request(`/dashboard/date/range`, {
+    method: "POST",
+    data: {
+      startDate,
+      endDate,
+    }
+  });
+};
+
+export const crawlDashboardByDate = async (date: string): Promise<Dashboard> => {
+  return request(`/dashboard/crawl/${date}`, {
+    method: "GET",
+  });
+};

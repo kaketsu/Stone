@@ -3,11 +3,6 @@ import puppeteer from 'puppeteer';
 import { DashboardService } from 'src/dashboard/dashboard.service';
 import { Dashboard } from 'src/dashboard/entities/dashboard.entity';
 
-const crawlInfo = {
-  page: 'https://data.eastmoney.com/stock/lhb.html',
-  onLoadSelector: 'content',
-};
-
 // enum Board {
 //   SSECI,
 //   SZSE_CI,
@@ -93,24 +88,6 @@ export class ItchService {
     return date1 < date2;
   }
 
-  // async crawlDashboard() {
-  //   const { page } = await this.initPuppeteer(crawlInfo.page);
-  //   await page.waitForSelector(`.${crawlInfo.onLoadSelector}`);
-  //   const allList = await page.$$('#sbgg_box > .lhbstock > .lhbtable');
-
-  //   const searchDateInput = (await page.$('#search_date')) as any;
-  //   console.log(searchDateInput);
-
-  //   for (let i = 0; i < allList.length; i++) {
-  //     const table = allList[i];
-  //     const tdList = await table.$$('span.wname');
-  //     console.log(tdList.length);
-  //   }
-  // const crawlDashboardData = {};
-  // this.dashboardService.createDashboard(crawlDashboardData);
-  // 能不能用这个做一个热度的加权
-  // }
-
   // 涨停跌停个数
   async crawlZtgcFromDashboard(ztgcCrawlInfo: any) {
     // const lastAuctionTime = '09:30:00';
@@ -127,6 +104,7 @@ export class ItchService {
     let count2 = 0;
     let count3 = 0;
     let countBeforeCallAuction = 0;
+    let date = '';
 
     for (let i = 0; i < allStocks.length; i++) {
       const stockInfo = await allStocks[i].$$('td');
@@ -151,9 +129,16 @@ export class ItchService {
       }
     }
 
+    if (ztgcCrawlInfo.date) {
+      const dateInput = (await page.$$(ztgcCrawlInfo.date)) as any;
+
+      date = await dateInput?.[0]?.evaluate((x) => x.value);
+    }
+
     await browser.close();
 
     return {
+      date,
       count1,
       count2,
       count3,
@@ -167,6 +152,7 @@ export class ItchService {
       onLoadSelector: '#zrzttable tfoot',
       moreSelector: '#zrzttable tfoot td',
       allStockSelector: '#zrzttable tbody tr',
+      date: '#beginDate',
     };
 
     const dtgcCrawlInfo = {
@@ -174,12 +160,14 @@ export class ItchService {
       onLoadSelector: '#zrzttable tfoot',
       moreSelector: '#zrzttable tfoot td',
       allStockSelector: '#zrzttable tbody tr',
+      date: '#beginDate',
     };
 
     const limitUpData = await this.crawlZtgcFromDashboard(ztgcCrawlInfo);
     const limitDownData = await this.crawlZtgcFromDashboard(dtgcCrawlInfo);
 
     return {
+      date: limitUpData?.date,
       limitUp: limitUpData,
       limitDown: limitDownData,
     };
@@ -224,10 +212,7 @@ export class ItchService {
       }
     }
     newDashboard.tradingVolume =
-      newDashboard.tradingVolume1 +
-      newDashboard.tradingVolume2 +
-      newDashboard.tradingVolume3 +
-      newDashboard.tradingVolume4;
+      newDashboard.tradingVolume1 + newDashboard.tradingVolume2;
 
     await browser.close();
     return newDashboard;

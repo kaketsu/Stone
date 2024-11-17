@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { Between, Repository, UpdateResult } from 'typeorm';
 import { Dashboard } from './entities/dashboard.entity';
 import { CreateDashboardDto } from './dto/create-dashboard.dto';
 
@@ -77,4 +77,15 @@ export class DashboardService {
   //   // This is a placeholder implementation
   //   return Math.random() * 100;
   // }
+
+  findDashboardsByDateRange(startDate: Date, endDate: Date) {
+    return this.dashboardRepository.find({
+      where: {
+        date: Between(startDate, endDate),
+      },
+      order: {
+        date: 'ASC', // 或者 'ASC' 进行升序排序
+      },
+    });
+  }
 }

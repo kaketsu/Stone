@@ -1,0 +1,22 @@
+.boardStatistic {
+  .green {
+    :global {
+      .ant-statistic-content {
+        color: #52c2a3;
+      }
+    }
+  }
+  .red {
+    :global {
+      .ant-statistic-content {
+        color: #de0422;
+      }
+    }
+  }
+
+  :global {
+    .ant-statistic-content {
+      font-size: 16px !important;
+    }
+  }
+}

@@ -1,6 +1,10 @@
 export interface Dashboard {
   date: string;
   tradingVolume: number;
+  tradingVolume1: number;
+  tradingVolume2: number;
+  tradingVolume3: number;
+  tradingVolume4: number;
   limitUpCount1: number;
   limitUpCount2: number;
   limitUpCount3: number;
@@ -10,4 +14,8 @@ export interface Dashboard {
   limitDownCount3: number;
   limitDownCountBeforeCallAuction: number;
   redStockCount: number;
+  percentageChange1: number;
+  percentageChange2: number;
+  percentageChange3: number;
+  percentageChange4: number;
 }

@@ -1,22 +1,36 @@
 'use client'
 
 import { Dashboard } from '@/types/index'
-import { getDashboard } from '@/utils/service'
+import { DATE_FORMAT } from '@/utils/constants'
+import { crawlDashboardByDate, getDashboard, getDashboardByDate } from '@/utils/service'
+import { CalendarOutlined } from '@ant-design/icons'
 import { Column } from '@ant-design/plots'
-import { Card, Col, Row, Statistic, Table } from 'antd'
+import { Button, Card, Col, Row, Space, Statistic, Table } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
+import styles from './style.module.scss'
 
 export default function DashboardPage() {
+  const currentDate = dayjs().format(DATE_FORMAT)
+
+  const [loading, setLoading] = useState<boolean>(false)
   const [dashboardList, setDashboardList] = useState<Dashboard[]>([])
+  const [currentBoard, setCurrentBoard] = useState<Dashboard>()
+
   const [currentTab, setCurrentTab] = useState('tab1')
   useEffect(() => {
     asyncFetch()
   }, [])
 
   const asyncFetch = () => {
+    setLoading(true)
     getDashboard().then((data) => {
       setDashboardList(data)
+
+      setLoading(false)
+    })
+    getDashboardByDate(currentDate).then((current) => {
+      setCurrentBoard(current)
     })
   }
 
@@ -119,10 +133,158 @@ export default function DashboardPage() {
     ]
   }, [])
 
-  useEffect(() => {}, [])
+  const calStatisticsValue = (val: number | undefined) => {
+    if (!val) return ''
+    if (val < 0) {
+      return styles.green
+    } else {
+      return styles.red
+    }
+  }
 
+  const crawlDashboard = () => {
+    const res = crawlDashboardByDate(currentDate)
+    console.log(res)
+  }
   return (
     <div>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <CalendarOutlined className="text-2xl" style={{ color: '#4099ff' }} />
+          <span className="ml-2">{currentDate}</span>
+        </div>
+        <Button type="primary" onClick={crawlDashboard} size="small">
+          Crawl Dashboard
+        </Button>
+      </div>
+
+      {currentBoard && (
+        <Space className="mb-4 flex !items-start">
+          <Card className="flex-1">
+            <Row gutter={[16, 16]} className={styles.boardStatistic}>
+              <Col span={12}>
+                <Statistic
+                  title="上证指数"
+                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  value={currentBoard?.percentageChange1}
+                  suffix={'%'}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="深圳指数"
+                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  value={currentBoard?.percentageChange2}
+                  suffix={'%'}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="创业板指数"
+                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  value={currentBoard?.percentageChange3}
+                  suffix={'%'}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="北证50"
+                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  value={currentBoard?.percentageChange4}
+                  suffix={'%'}
+                />
+              </Col>
+            </Row>
+          </Card>
+
+          <Card className="flex-1">
+            <Row gutter={[16, 16]} className={styles.boardStatistic}>
+              <Col span={16}>
+                <Statistic
+                  title="涨停个数"
+                  loading={loading}
+                  value={currentBoard?.limitUpCount1 + currentBoard?.limitUpCount2 + currentBoard?.limitUpCount3}
+                />
+              </Col>
+
+              <Col span={6}>
+                <Statistic title="1字涨停" value={currentBoard?.limitUpCountBeforeCallAuction} />
+              </Col>
+
+              <Col span={8}>
+                <Statistic title="10%" value={currentBoard?.limitUpCount1} />
+              </Col>
+              <Col span={8}>
+                <Statistic title="20%" value={currentBoard?.limitUpCount2} />
+              </Col>
+              <Col span={8}>
+                <Statistic title="30%" value={currentBoard?.limitUpCount3} />
+              </Col>
+            </Row>
+          </Card>
+
+          <Card className="flex-1">
+            <Row gutter={[16, 16]} className={styles.boardStatistic}>
+              <Col span={16}>
+                <Statistic
+                  loading={loading}
+                  title="跌停个数"
+                  value={currentBoard?.limitDownCount1 + currentBoard?.limitDownCount2 + currentBoard?.limitDownCount3}
+                />
+              </Col>
+
+              <Col span={6}>
+                <Statistic title="一字板" value={currentBoard?.limitDownCountBeforeCallAuction} />
+              </Col>
+
+              <Col span={8}>
+                <Statistic title="10%" value={currentBoard?.limitDownCount1} />
+              </Col>
+              <Col span={8}>
+                <Statistic title="20%" value={currentBoard?.limitDownCount2} />
+              </Col>
+              <Col span={8}>
+                <Statistic title="30%" value={currentBoard?.limitDownCount3} />
+              </Col>
+            </Row>
+          </Card>
+
+          <Card className="flex-1">
+            <Row gutter={[16, 16]} className={styles.boardStatistic}>
+              <Col span={24}>
+                <Statistic title="成交额" loading={loading} value={currentBoard?.tradingVolume} />
+              </Col>
+
+              <Col span={8}>
+                <Statistic title="上证" value={currentBoard?.tradingVolume1} />
+              </Col>
+
+              <Col span={8}>
+                <Statistic title="深证" value={currentBoard?.tradingVolume2} />
+              </Col>
+
+              <Col span={8}>
+                <Statistic title="创业板" value={currentBoard?.tradingVolume3} />
+              </Col>
+
+              {/* <Col span={6}>
+              <Statistic title="1字涨停" value={currentBoard?.limitUpCountBeforeCallAuction} />
+            </Col>
+
+            <Col span={8}>
+              <Statistic title="10%" value={currentBoard?.limitUpCount1} />
+            </Col>
+            <Col span={8}>
+              <Statistic title="20%" value={currentBoard?.limitUpCount2} />
+            </Col>
+            <Col span={8}>
+              <Statistic title="30%" value={currentBoard?.limitUpCount3} />
+            </Col> */}
+            </Row>
+          </Card>
+        </Space>
+      )}
+
       <Card style={{ width: '100%' }} title="Dashboard" bordered={false}>
         <Table
           columns={columns}

@@ -24,6 +24,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         router.push('/dashboard')
       },
     },
+    {
+      key: 'trend',
+      label: 'Trend',
+      icon: <DesktopOutlined />,
+      onClick: () => {
+        router.push('/trend')
+      },
+    },
   ]
 
   return (

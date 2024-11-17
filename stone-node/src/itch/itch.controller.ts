@@ -3,8 +3,7 @@ import { ItchService } from './itch.service';
 import { DashboardService } from 'src/dashboard/dashboard.service';
 import { Dashboard } from 'src/dashboard/entities/dashboard.entity';
 import * as dayjs from 'dayjs';
-
-const format = 'YYYY-MM-DD 00:00:00';
+import { FORMAT } from 'src/utils/constants';
 @Controller('itch')
 export class ItchController {
   constructor(
@@ -14,11 +13,13 @@ export class ItchController {
 
   @Get()
   async findAll() {
-    const date = new Date(dayjs(new Date()).format(format));
+    return;
+    const date = new Date(dayjs(new Date()).format(FORMAT));
     const newDashboard = new Dashboard();
     newDashboard.date = date;
 
     const res = await this.itchService.crawlDataFromDashboard();
+
     newDashboard.limitUpCount1 = res.limitUp?.count1;
     newDashboard.limitUpCount2 = res.limitUp?.count2;
     newDashboard.limitUpCount3 = res.limitUp?.count3;

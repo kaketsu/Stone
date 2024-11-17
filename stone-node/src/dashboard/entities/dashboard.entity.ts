@@ -12,31 +12,31 @@ export class Dashboard {
   @Column()
   date: Date;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   tradingVolume: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   tradingVolume1: number; //上
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   tradingVolume2: number; //深
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   tradingVolume3: number; //创
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   tradingVolume4: number; //北
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   percentageChange1: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   percentageChange2: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   percentageChange3: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   percentageChange4: number;
 
   @Column({ default: 0 })
