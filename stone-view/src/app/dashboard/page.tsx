@@ -2,7 +2,7 @@
 
 import { Dashboard } from '@/types/index'
 import { DATE_FORMAT } from '@/utils/constants'
-import { crawlDashboardByDate, getDashboard, getDashboardByDate } from '@/utils/service'
+import { crawlDashboardByDate, getAllDashboards, getDashboardByDate } from '@/utils/service'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Column } from '@ant-design/plots'
 import { Button, Card, Col, Row, Space, Statistic, Table } from 'antd'
@@ -24,9 +24,8 @@ export default function DashboardPage() {
 
   const asyncFetch = () => {
     setLoading(true)
-    getDashboard().then((data) => {
+    getAllDashboards().then((data) => {
       setDashboardList(data)
-
       setLoading(false)
     })
     getDashboardByDate(currentDate).then((current) => {
@@ -144,7 +143,6 @@ export default function DashboardPage() {
 
   const crawlDashboard = () => {
     const res = crawlDashboardByDate(currentDate)
-    console.log(res)
   }
   return (
     <div>
@@ -173,7 +171,7 @@ export default function DashboardPage() {
               <Col span={12}>
                 <Statistic
                   title="深圳指数"
-                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  className={calStatisticsValue(currentBoard?.percentageChange2)}
                   value={currentBoard?.percentageChange2}
                   suffix={'%'}
                 />
@@ -181,7 +179,7 @@ export default function DashboardPage() {
               <Col span={12}>
                 <Statistic
                   title="创业板指数"
-                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  className={calStatisticsValue(currentBoard?.percentageChange3)}
                   value={currentBoard?.percentageChange3}
                   suffix={'%'}
                 />
@@ -189,7 +187,7 @@ export default function DashboardPage() {
               <Col span={12}>
                 <Statistic
                   title="北证50"
-                  className={calStatisticsValue(currentBoard?.percentageChange1)}
+                  className={calStatisticsValue(currentBoard?.percentageChange4)}
                   value={currentBoard?.percentageChange4}
                   suffix={'%'}
                 />

@@ -10,6 +10,7 @@ import { StockModule } from './stock/stock.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ItchModule } from './itch/itch.module';
 import { SectorTrendModule } from './sector-trend/sector-trend.module';
+import { StockLimitUpModule } from './stock-limit-up/stock-limit-up.module';
 @Module({
   imports: [
     HelloModule,
@@ -17,6 +18,7 @@ import { SectorTrendModule } from './sector-trend/sector-trend.module';
     StockModule,
     DashboardModule,
     ItchModule,
+    StockLimitUpModule,
     // TypeOrmModule.forRoot({
     //   type: 'postgres',
     //   host: 'localhost',
@@ -40,7 +42,13 @@ import { SectorTrendModule } from './sector-trend/sector-trend.module';
     }),
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      include: [HelloModule, SectorModule, StockModule, DashboardModule],
+      include: [
+        HelloModule,
+        SectorModule,
+        StockModule,
+        DashboardModule,
+        StockLimitUpModule,
+      ],
       driver: ApolloDriver,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),

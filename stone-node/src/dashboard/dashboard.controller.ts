@@ -108,6 +108,14 @@ export class DashboardController {
     newDashboard.limitUpCount3 = res.limitUp?.count3;
     newDashboard.limitUpCountBeforeCallAuction =
       res.limitUp?.countBeforeCallAuction;
+    newDashboard.allLockUpAmount = res.limitUp.allAmount;
+
+    newDashboard.limitUpIndex = this.dashboardService.calcDashboardLimitUpIndex(
+      res.limitUp.count1,
+      res.limitUp.count2,
+      res.limitUp.count3,
+      res.limitUp.countBeforeCallAuction,
+    );
     newDashboard.limitDownCount1 = res.limitDown?.count1;
     newDashboard.limitDownCount2 = res.limitDown?.count2;
     newDashboard.limitDownCount3 = res.limitDown?.count3;

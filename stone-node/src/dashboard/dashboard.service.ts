@@ -43,7 +43,11 @@ export class DashboardService {
   }
 
   findAll(): Promise<Dashboard[]> {
-    return this.dashboardRepository.find();
+    return this.dashboardRepository.find({
+      order: {
+        date: 'ASC', // 或者 'ASC' 进行升序排序
+      },
+    });
   }
 
   findDashboard(id: string): Promise<Dashboard> {
@@ -87,5 +91,13 @@ export class DashboardService {
         date: 'ASC', // 或者 'ASC' 进行升序排序
       },
     });
+  }
+
+  // 10 * 2
+  // 20 * 3
+  // 30 * 4
+  // 一 * 5
+  calcDashboardLimitUpIndex(l1, l2, l3, l0) {
+    return l1 * 2 + l2 * 3 + l3 * 4 + l0 * 5;
   }
 }

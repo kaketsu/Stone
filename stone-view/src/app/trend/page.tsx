@@ -1,10 +1,12 @@
 'use client'
 
+// https://ant-design-charts.antgroup.com/manual/introduction
+
 import { Dashboard } from '@/types/index'
 import { DATE_FORMAT } from '@/utils/constants'
-import { getDashboardByDateRange } from '@/utils/service'
+import { getAllDashboards, getDashboardByDateRange } from '@/utils/service'
+import { Column } from '@ant-design/charts'
 import { LineChartOutlined, TableOutlined } from '@ant-design/icons'
-import { Column } from '@ant-design/plots'
 import { Card, DatePicker, Radio, Space, Table } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
@@ -19,7 +21,7 @@ export default function TrendPage() {
   const [currentTab, setCurrentTab] = useState('tab1')
   const [rangeType, setRangeType] = useState('week')
 
-  const config = {
+  const columnConfig = {
     data: dashboardList,
     xField: 'date',
     xAxis: {
@@ -35,26 +37,6 @@ export default function TrendPage() {
       start: 0.1,
       end: 0.2,
     },
-  }
-
-  const tabList = [
-    {
-      key: 'tab1',
-      tab: 'tab1',
-    },
-    {
-      key: 'tab2',
-      tab: 'tab2',
-    },
-  ]
-
-  const contentList: any = {
-    tab1: (
-      <div>
-        <Column {...config} />
-      </div>
-    ),
-    tab2: <p>content2</p>,
   }
 
   const columns = useMemo(() => {
@@ -150,7 +132,9 @@ export default function TrendPage() {
   }
 
   useEffect(() => {
-    changeWeek(dayjs().startOf('week').toDate())
+    getAllDashboards().then((res) => {
+      setDashboardList(res)
+    })
   }, [])
 
   return (
@@ -188,7 +172,7 @@ export default function TrendPage() {
       >
         {displayType === 'chart' && (
           <>
-            <Column {...config} />
+            <Column {...columnConfig} />
           </>
         )}
         {displayType === 'table' && (

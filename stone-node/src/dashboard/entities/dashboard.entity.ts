@@ -67,6 +67,25 @@ export class Dashboard {
   redStockCount: number;
 
   // 如何用上面的来做一个加权heat
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   heat: number;
+
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  limitUpIndex: number;
+
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  sentimentIndex: number;
+
+  // 总封单金额
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  allLockUpAmount: number;
+
+  // 0~3 个数  1分
+  // 3-6     2分
+  // 6-9     3分
+  // 10
+  // 10-13
+  // 13-16
+  // 16-19
+  // 10
 }

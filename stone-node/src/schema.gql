@@ -14,6 +14,7 @@ type Query {
   Dashboard: Dashboard!
   Sector: Sector!
   Stock: Stock!
+  StockLimitUp: StockLimitUp!
   hello: Hello!
 }
 
@@ -29,4 +30,8 @@ type Sector {
 
 type Stock {
   stockId: ID!
+}
+
+type StockLimitUp {
+  id: ID!
 }

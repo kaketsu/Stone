@@ -10,7 +10,7 @@ export const postDashboard = async (data: Dashboard) => {
   });
 };
 
-export const getDashboard = async (): Promise<Dashboard[]> => {
+export const getAllDashboards = async (): Promise<Dashboard[]> => {
   return request("/dashboard", {
     method: "GET",
   });

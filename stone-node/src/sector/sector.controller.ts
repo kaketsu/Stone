@@ -71,4 +71,9 @@ export class SectorController {
   remove(@Param('id') id: string) {
     return this.sectorService.removeSector(+id);
   }
+
+  @Get(':sectorId')
+  crawlSector(@Param('sectorId') sectorId: string) {
+    return this.sectorService.removeSector(+sectorId);
+  }
 }
