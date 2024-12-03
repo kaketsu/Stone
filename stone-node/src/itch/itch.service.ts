@@ -235,18 +235,32 @@ export class ItchService {
       allStockSelector: '#zrzttable tbody tr',
       date: '#beginDate',
     };
-
     const { page, browser } = await this.initPuppeteer(crawlInfo.page);
     await page.waitForSelector(crawlInfo.onLoadSelector);
 
     const dateInput = (await page.$$(crawlInfo.date)) as any;
-    const crawlDate = await dateInput?.[0]?.evaluate((x) => x.value);
+    let crawlDate = await dateInput?.[0]?.evaluate((x) => x.value);
     if (date !== crawlDate) {
+      const day = dayjs(date).date();
+      console.log(crawlDate, day);
+
+      await dateInput?.[0].click();
+      const datePicker = (await page.$$(
+        `.pika-lendar table td[data-day="${day}"]`,
+      )) as any;
+
+      await datePicker?.[0].click();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
+    crawlDate = await dateInput?.[0]?.evaluate((x) => x.value);
+    if (date !== crawlDate) {
+      console.log('invalid date');
       return [];
     }
 
     await page.click(crawlInfo.moreSelector);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const allStocks = (await page.$$(crawlInfo.allStockSelector)) as any;
 
     const stocks = [];
@@ -259,16 +273,34 @@ export class ItchService {
       const stockCode = await stockInfo[1].evaluate((x) => x.textContent);
       const stockName = await stockInfo[2].evaluate((x) => x.textContent);
       const volume = await stockInfo[5].evaluate((x) => x.textContent);
+      const marketValue = await stockInfo[7].evaluate((x) => x.textContent);
       const rate = await stockInfo[8].evaluate((x) => x.textContent);
       const fund = await stockInfo[9].evaluate((x) => x.textContent);
       const stockUpTime = await stockInfo[11].evaluate((x) => x.textContent);
+      const limitUpLevel = await stockInfo[14].evaluate((x) => x.textContent);
 
-      console.log(stockCode, stockName, volume, rate, fund, stockUpTime);
+      console.log(
+        stockCode,
+        stockName,
+        marketValue,
+        volume,
+        rate,
+        fund,
+        stockUpTime,
+        limitUpLevel,
+      );
       newStockLimitUp.date = today;
 
       newStockLimitUp.stockCode = stockCode;
       newStockLimitUp.stockName = stockName;
       newStockLimitUp.turnoverRate = parseFloat(rate);
+
+      if (marketValue?.endsWith('亿')) {
+        newStockLimitUp.totalMarketValue = parseFloat(marketValue);
+      } else if (marketValue?.endsWith('万')) {
+        newStockLimitUp.totalMarketValue = parseFloat(marketValue) / 10000;
+      }
+
       if (fund?.endsWith('亿')) {
         newStockLimitUp.lockUpFunds = parseFloat(fund);
       } else if (fund?.endsWith('万')) {
@@ -283,6 +315,12 @@ export class ItchService {
 
       if (this.isTimeLessThan(stockUpTime)) {
         newStockLimitUp.isCeilingLimitUp = true;
+      }
+
+      if (limitUpLevel === '首板') {
+        newStockLimitUp.limitUpLevel = 1;
+      } else {
+        newStockLimitUp.limitUpLevel = parseFloat(limitUpLevel);
       }
 
       stocks.push(newStockLimitUp);

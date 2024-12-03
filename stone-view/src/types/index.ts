@@ -5,10 +5,12 @@ export interface Dashboard {
   tradingVolume2: number;
   tradingVolume3: number;
   tradingVolume4: number;
+  limitUpCount: number;
   limitUpCount1: number;
   limitUpCount2: number;
   limitUpCount3: number;
   limitUpCountBeforeCallAuction: number;
+  limitDownCount: number;
   limitDownCount1: number;
   limitDownCount2: number;
   limitDownCount3: number;

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StockLimitUp } from './entities/stock-limit-up.entity';
 import { CreateStockLimitUpDto } from './dto/create-stock-limit-up.dto';
-import { UpdateStockLimitUpDto } from './dto/update-stock-limit-up.dto';
 
 @Injectable()
 export class StockLimitUpService {
@@ -12,12 +11,7 @@ export class StockLimitUpService {
     private readonly stockRepository: Repository<StockLimitUp>,
   ) {}
 
-  createStockLimitUp(createStockLimitUpDto: CreateStockLimitUpDto) {
-    const stock: StockLimitUp = new StockLimitUp();
-    stock.stockName = createStockLimitUpDto.stockName;
-    stock.stockCode = createStockLimitUpDto.stockCode;
-    // stock.subSector = createStockLimitUpDto.subSector;
-    // stock.mainSector = createStockLimitUpDto.mainSector;
+  createStockLimitUp(stock: StockLimitUp) {
     return this.stockRepository.save(stock);
   }
 
@@ -33,42 +27,26 @@ export class StockLimitUpService {
     return this.stockRepository.findOneBy({ id });
   }
 
+  findStockLimitUpByDateAndStock(date, stockCode): Promise<StockLimitUp> {
+    return this.stockRepository.findOneBy({ date, stockCode });
+  }
+
+  findStockLimitUpByDate(date: Date): Promise<StockLimitUp[]> {
+    return this.stockRepository.findBy({ date });
+  }
+
   updateStockLimitUp(
-    id: number,
-    updateStockLimitUpDto: UpdateStockLimitUpDto,
-  ): Promise<StockLimitUp> {
-    const stock: StockLimitUp = new StockLimitUp();
-    stock.stockName = updateStockLimitUpDto.stockName;
-    stock.stockCode = updateStockLimitUpDto.stockCode;
-    // stock.mainSector = updateStockLimitUpDto.mainSector;
-    // stock.subSector = updateStockLimitUpDto.subSector;
-    return this.stockRepository.save(stock);
+    id: string,
+    createStockLimitUpDto: CreateStockLimitUpDto,
+  ): Promise<any> {
+    return this.stockRepository.update(id, createStockLimitUpDto);
   }
 
   removeStockLimitUp(stockId: number): Promise<{ affected?: number }> {
     return this.stockRepository.delete(stockId);
   }
 
-  // findAllByAuthor(authorId: string): Promise<StockLimitUp[]> {
-  //   return this.stockRepository.find({
-  //     where: {
-  //       author: {
-  //         id: authorId,
-  //       },
-  //     },
-  //   });
-  // }
-
-  // async postAuthor(postId: string) {
-  //   const post = await this.stockRepository.findOne({
-  //     where: {
-  //       id: postId,
-  //     },
-  //     relations: {
-  //       author: true,
-  //     },
-  //   });
-
-  //   return post.author;
-  // }
+  removeOneDayStockLimitUp(date: Date): Promise<{ affected?: number }> {
+    return this.stockRepository.delete(date);
+  }
 }

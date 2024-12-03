@@ -1,11 +1,12 @@
 'use client'
 
 // https://ant-design-charts.antgroup.com/manual/introduction
+// https://echarts.apache.org/examples/zh/index.html
 
 import { Dashboard } from '@/types/index'
 import { DATE_FORMAT } from '@/utils/constants'
 import { getAllDashboards, getDashboardByDateRange } from '@/utils/service'
-import { Column } from '@ant-design/charts'
+import { Line } from '@ant-design/charts'
 import { LineChartOutlined, TableOutlined } from '@ant-design/icons'
 import { Card, DatePicker, Radio, Space, Table } from 'antd'
 import dayjs from 'dayjs'
@@ -21,23 +22,53 @@ export default function TrendPage() {
   const [currentTab, setCurrentTab] = useState('tab1')
   const [rangeType, setRangeType] = useState('week')
 
-  const columnConfig = {
-    data: dashboardList,
-    xField: 'date',
-    xAxis: {
-      label: {
-        autoRotate: false,
-        formatter: (value: any) => {
-          return dayjs(value).format(DATE_FORMAT)
+  const columnConfig = useMemo(() => {
+    return {
+      // data: {
+      //   value: dashboardList,
+      //   transform: [
+      //     {
+      //       type: 'fold',
+      //       fields: ['tradingVolume'],
+      //       key: 'type',
+      //       value: 'value',
+      //     },
+      //   ],
+      // },
+      data: dashboardList,
+      xField: (d: any) => {
+        return dayjs(d.date).format(DATE_FORMAT)
+      },
+      yField: 'tradingVolume',
+      yAxis: {
+        label: {
+          // 数值格式化为千分位
+          formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
         },
       },
-    },
-    yField: 'tradingVolume',
-    slider: {
-      start: 0.1,
-      end: 0.2,
-    },
-  }
+      colorField: 'type',
+
+      // axis: {
+      //   x: { labelAutoHide: 'greedy' },
+      // },
+      // axis: {
+      //   x: { labelAutoHide: 'greedy' },
+      // },
+      // xAxis: {
+      //   label: {
+      //     autoRotate: false,
+      //     formatter: (value: any) => {
+      //       return dayjs(value).format(DATE_FORMAT)
+      //     },
+      //   },
+      // },
+
+      // slider: {
+      //   start: 0.1,
+      //   end: 0.2,
+      // },
+    }
+  }, [dashboardList])
 
   const columns = useMemo(() => {
     return [
@@ -172,7 +203,7 @@ export default function TrendPage() {
       >
         {displayType === 'chart' && (
           <>
-            <Column {...columnConfig} />
+            <Line {...columnConfig} />
           </>
         )}
         {displayType === 'table' && (
@@ -193,3 +224,16 @@ export default function TrendPage() {
     </div>
   )
 }
+
+// 1板晋级个数（率）
+// 2板
+// 3板晋级
+// 4
+// 5板
+// 5板+
+
+// 1 和昨天比较，找到所有连板的股票, 总晋级率是可以算出来的
+// 2 加一个currentLimitUp
+
+// 昨天是2 今天是3的时候就变成晋级成功
+// 加一个limitUpStatistics

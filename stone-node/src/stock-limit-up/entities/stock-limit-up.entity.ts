@@ -28,10 +28,13 @@ export class StockLimitUp {
   tradingVolume: number;
 
   @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  totalMarketValue: number;
+
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
   lockUpFunds: number;
 
-  @Column({ default: 0 })
-  continuousLimitUpNumber: number;
+  @Column({ default: 1 })
+  limitUpLevel: number;
 
   // @ManyToOne(() => Sector, (post: Sector) => post.sectorId)
   // @Column()

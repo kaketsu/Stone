@@ -35,7 +35,10 @@ export class CreateStockLimitUpDto {
   lockUpFunds: number;
 
   @IsNumber()
-  continuousLimitUpNumber: number;
+  totalMarketValue: number;
+
+  @IsNumber()
+  limitUpLevel: number;
 
   // @IsBoolean()
   // mainSector: Sector;

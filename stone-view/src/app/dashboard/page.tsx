@@ -253,31 +253,21 @@ export default function DashboardPage() {
                 <Statistic title="成交额" loading={loading} value={currentBoard?.tradingVolume} />
               </Col>
 
-              <Col span={8}>
+              <Col span={6}>
                 <Statistic title="上证" value={currentBoard?.tradingVolume1} />
               </Col>
 
-              <Col span={8}>
+              <Col span={6}>
                 <Statistic title="深证" value={currentBoard?.tradingVolume2} />
               </Col>
 
-              <Col span={8}>
+              <Col span={6}>
                 <Statistic title="创业板" value={currentBoard?.tradingVolume3} />
               </Col>
 
-              {/* <Col span={6}>
-              <Statistic title="1字涨停" value={currentBoard?.limitUpCountBeforeCallAuction} />
-            </Col>
-
-            <Col span={8}>
-              <Statistic title="10%" value={currentBoard?.limitUpCount1} />
-            </Col>
-            <Col span={8}>
-              <Statistic title="20%" value={currentBoard?.limitUpCount2} />
-            </Col>
-            <Col span={8}>
-              <Statistic title="30%" value={currentBoard?.limitUpCount3} />
-            </Col> */}
+              <Col span={6}>
+                <Statistic title="北证" value={currentBoard?.tradingVolume4} />
+              </Col>
             </Row>
           </Card>
         </Space>

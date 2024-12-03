@@ -38,3 +38,25 @@ export const crawlDashboardByDate = async (date: string): Promise<Dashboard> => 
     method: "GET",
   });
 };
+
+
+export const getAllLimitUpByDate = async (date: string): Promise<any[]> => {
+  return request(`/stock-limit-up/date/${date}`, {
+    method: "GET",
+  });
+};
+
+
+
+export const getLimitUpStatisticsByDate = async (date: string): Promise<Dashboard> => {
+  return request(`/stock-limit-up-statistics/date/${date}`, {
+    method: "GET",
+  });
+};
+
+
+export const getLimitUpStatistics = async (): Promise<any[]> => {
+  return request(`/stock-limit-up-statistics`, {
+    method: "GET",
+  });
+};

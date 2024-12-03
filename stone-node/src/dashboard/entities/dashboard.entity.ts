@@ -40,6 +40,9 @@ export class Dashboard {
   percentageChange4: number;
 
   @Column({ default: 0 })
+  limitUpCount: number;
+
+  @Column({ default: 0 })
   limitUpCount1: number;
 
   @Column({ default: 0 })
@@ -50,6 +53,9 @@ export class Dashboard {
 
   @Column({ default: 0 })
   limitUpCountBeforeCallAuction: number;
+
+  @Column({ default: 0 })
+  limitDownCount: number;
 
   @Column({ default: 0 })
   limitDownCount1: number;

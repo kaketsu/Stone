@@ -3,7 +3,7 @@
 import { DesktopOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import type { MenuProps } from 'antd'
-import { Breadcrumb, Button, Layout, Menu } from 'antd'
+import { Button, Layout, Menu } from 'antd'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import './globals.css'
@@ -32,6 +32,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         router.push('/trend')
       },
     },
+    {
+      key: 'limitUp',
+      label: 'limit-up',
+      icon: <DesktopOutlined />,
+      onClick: () => {
+        router.push('/limit-up')
+      },
+    },
   ]
 
   return (
@@ -52,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   className={styles.stoneMenu}
                 />
               </Sider>
-              <Layout className="px-6 pb-6">
+              <Layout className="overflow-auto px-6 pb-6">
                 <div className="my-4 flex items-center">
                   <Button
                     className="mr-2"
@@ -60,11 +68,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                     onClick={() => setCollapsed(!collapsed)}
                   />
-                  <Breadcrumb className="h-[26px]">
+                  {/* <Breadcrumb className="h-[26px]">
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                     <Breadcrumb.Item>App</Breadcrumb.Item>
-                  </Breadcrumb>
+                  </Breadcrumb> */}
                 </div>
 
                 {children}

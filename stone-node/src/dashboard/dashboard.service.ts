@@ -12,34 +12,7 @@ export class DashboardService {
   ) {}
 
   createDashboard(createDashboardDto: CreateDashboardDto) {
-    const dashboard: Dashboard = new Dashboard();
-
-    dashboard.date = createDashboardDto.date;
-    dashboard.tradingVolume = createDashboardDto.tradingVolume;
-    dashboard.tradingVolume1 = createDashboardDto.tradingVolume1;
-    dashboard.tradingVolume2 = createDashboardDto.tradingVolume2;
-    dashboard.tradingVolume3 = createDashboardDto.tradingVolume3;
-    dashboard.tradingVolume4 = createDashboardDto.tradingVolume4;
-
-    dashboard.percentageChange1 = createDashboardDto.percentageChange1;
-    dashboard.percentageChange2 = createDashboardDto.percentageChange2;
-    dashboard.percentageChange3 = createDashboardDto.percentageChange3;
-    dashboard.percentageChange4 = createDashboardDto.percentageChange4;
-
-    dashboard.limitUpCount1 = createDashboardDto.limitUpCount1;
-    dashboard.limitUpCount2 = createDashboardDto.limitUpCount2;
-    dashboard.limitUpCount3 = createDashboardDto.limitUpCount3;
-    dashboard.limitUpCountBeforeCallAuction =
-      createDashboardDto.limitUpCountBeforeCallAuction;
-    dashboard.limitDownCount1 = createDashboardDto.limitDownCount1;
-    dashboard.limitDownCount2 = createDashboardDto.limitDownCount2;
-    dashboard.limitDownCount3 = createDashboardDto.limitDownCount3;
-    dashboard.limitDownCountBeforeCallAuction =
-      createDashboardDto.limitDownCountBeforeCallAuction;
-    dashboard.redStockCount = createDashboardDto.redStockCount;
-    dashboard.heat = createDashboardDto.heat;
-
-    return this.dashboardRepository.save(dashboard);
+    return this.dashboardRepository.save(createDashboardDto);
   }
 
   findAll(): Promise<Dashboard[]> {
@@ -61,14 +34,6 @@ export class DashboardService {
     id: string,
     updateDashboardDto: CreateDashboardDto,
   ): Promise<UpdateResult> {
-    console.log(updateDashboardDto);
-    // const dashboard: Dashboard = new Dashboard();
-    // dashboard.date = updateDashboardDto.date;
-    // const currentDashboard = await this.findDashboardByDate(date);
-
-    // dashboard.mainSector = updateDashboardDto.mainSector;
-    // dashboard.subSector = updateDashboardDto.subSector;
-
     return this.dashboardRepository.update(id, updateDashboardDto);
   }
 

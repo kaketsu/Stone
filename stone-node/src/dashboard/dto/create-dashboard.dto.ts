@@ -36,6 +36,9 @@ export class CreateDashboardDto {
   percentageChange4: number;
 
   @IsNumber()
+  limitUpCount: number;
+
+  @IsNumber()
   limitUpCount1: number;
 
   @IsNumber()
@@ -46,6 +49,9 @@ export class CreateDashboardDto {
 
   @IsNumber()
   limitUpCountBeforeCallAuction: number;
+
+  @IsNumber()
+  limitDownCount: number;
 
   @IsNumber()
   limitDownCount1: number;

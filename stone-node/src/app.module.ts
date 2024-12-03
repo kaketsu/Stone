@@ -11,6 +11,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ItchModule } from './itch/itch.module';
 import { SectorTrendModule } from './sector-trend/sector-trend.module';
 import { StockLimitUpModule } from './stock-limit-up/stock-limit-up.module';
+import { StockLimitUpStatisticsModule } from './stock-limit-up-statistics/stock-limit-up-statistics.module';
 @Module({
   imports: [
     HelloModule,
@@ -19,6 +20,7 @@ import { StockLimitUpModule } from './stock-limit-up/stock-limit-up.module';
     DashboardModule,
     ItchModule,
     StockLimitUpModule,
+    StockLimitUpStatisticsModule,
     // TypeOrmModule.forRoot({
     //   type: 'postgres',
     //   host: 'localhost',
@@ -48,6 +50,7 @@ import { StockLimitUpModule } from './stock-limit-up/stock-limit-up.module';
         StockModule,
         DashboardModule,
         StockLimitUpModule,
+        StockLimitUpStatisticsModule,
       ],
       driver: ApolloDriver,
       playground: true,

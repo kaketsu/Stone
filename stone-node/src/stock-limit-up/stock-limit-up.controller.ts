@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { StockLimitUpService } from './stock-limit-up.service';
-import { CreateStockLimitUpDto } from './dto/create-stock-limit-up.dto';
-import { UpdateStockLimitUpDto } from './dto/update-stock-limit-up.dto';
 import { ItchService } from '../itch/itch.service';
+import * as dayjs from 'dayjs';
+import { FORMAT } from 'src/utils/constants';
 
 /**
  * whatever the string pass in controller decorator it will be appended to
@@ -25,67 +17,51 @@ export class StockLimitUpController {
     private readonly itchService: ItchService,
   ) {}
 
-  /**
-   * Post decorator represents method of request as we have used post decorator the method
-   * of this API will be post.
-   * so the API URL to create StockLimitUp will be
-   * POST http://localhost:3000/stock
-   */
-  @Post()
-  create(@Body() createStockLimitUpDto: CreateStockLimitUpDto) {
-    return this.stockLimitUpService.createStockLimitUp(createStockLimitUpDto);
-  }
-
-  /**
-   * we have used get decorator to get all the stock's list
-   * so the API URL will be
-   * GET http://localhost:3000/stock
-   */
   @Get()
   findAll() {
     return this.stockLimitUpService.findAll();
   }
 
-  /**
-   * we have used get decorator with id param to get id from request
-   * so the API URL will be
-   * GET http://localhost:3000/stock/:id
-   */
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.stockLimitUpService.findStockLimitUp(id);
   }
 
-  /**
-   * we have used patch decorator with id param to get id from request
-   * so the API URL will be
-   * PATCH http://localhost:3000/stock/:id
-   */
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateStockLimitUpDto: UpdateStockLimitUpDto,
-  ) {
-    return this.stockLimitUpService.updateStockLimitUp(
-      +id,
-      updateStockLimitUpDto,
-    );
+  @Get('date/:dateString')
+  getLimitUpByDate(@Param('dateString') dateString: string) {
+    const date = new Date(dayjs(dateString).format(FORMAT));
+    return this.stockLimitUpService.findStockLimitUpByDate(date);
   }
 
-  /**
-   * we have used Delete decorator with id param to get id from request
-   * so the API URL will be
-   * DELETE http://localhost:3000/stock/:id
-   */
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.stockLimitUpService.removeStockLimitUp(+id);
   }
 
-  @Get('crawl/:date')
-  async crawlStockLimitUp(@Param('date') dateString: string) {
+  @Delete('date/:dateString')
+  removeDate(@Param('dateString') dateString: string) {
+    const date = new Date(dayjs(dateString).format(FORMAT));
+    return this.stockLimitUpService.removeOneDayStockLimitUp(date);
+  }
+
+  @Get('crawl/:dateString')
+  async crawlStockLimitUp(@Param('dateString') dateString: string) {
     // const date = new Date(dayjs(dateString).format(FORMAT));
     const stocks = await this.itchService.crawlStockLimitUp(dateString);
-    return this.stockLimitUpService.saveStockLimitUps(stocks);
+
+    for (let i = 0; i < stocks.length; i++) {
+      const stockRes =
+        await this.stockLimitUpService.findStockLimitUpByDateAndStock(
+          new Date(dayjs(dateString).format(FORMAT)),
+          stocks[i].stockCode,
+        );
+
+      if (stockRes && stockRes.id) {
+        this.stockLimitUpService.updateStockLimitUp(stockRes.id, stocks[i]);
+      } else {
+        this.stockLimitUpService.createStockLimitUp(stocks[i]);
+      }
+    }
+    // return this.stockLimitUpService.saveStockLimitUps(stocks);
   }
 }
