@@ -68,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                     onClick={() => setCollapsed(!collapsed)}
                   />
+                  <span>Patience is key in life</span>
                   {/* <Breadcrumb className="h-[26px]">
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
                     <Breadcrumb.Item>List</Breadcrumb.Item>

@@ -1,21 +1,12 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { StockLimitUpStatisticsService } from './stock-limit-up-statistics.service';
-// import { CreateStockLimitUpStatisticsDto } from './dto/create-stock-limit-up-statistics.dto';
-import { ItchService } from '../itch/itch.service';
 import * as dayjs from 'dayjs';
 import { FORMAT } from 'src/utils/constants';
 
-/**
- * whatever the string pass in controller decorator it will be appended to
- * API URL. to call any API from this controller you need to add prefix which is
- * passed in controller decorator.
- * in our case our base URL is http://localhost:3000/stock
- */
 @Controller('stock-limit-up-statistics')
 export class StockLimitUpStatisticsController {
   constructor(
     private readonly stockLimitUpStatisticsService: StockLimitUpStatisticsService,
-    private readonly itchService: ItchService,
   ) {}
 
   @Get()
@@ -36,7 +27,7 @@ export class StockLimitUpStatisticsController {
   async getStockLimitUpStatistics(@Param('dateString') dateString: string) {
     const date = new Date(dayjs(dateString).format(FORMAT));
     const statistics =
-      await this.stockLimitUpStatisticsService.findOneByDate(date);
+      await this.stockLimitUpStatisticsService.findOneByDate(dateString);
 
     if (!statistics) {
       return this.stockLimitUpStatisticsService.createStockLimitUpStatistics(

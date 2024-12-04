@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common';
 import { StockLimitUpService } from './stock-limit-up.service';
-import { ItchService } from '../itch/itch.service';
 import * as dayjs from 'dayjs';
 import { FORMAT } from 'src/utils/constants';
 
@@ -12,10 +11,7 @@ import { FORMAT } from 'src/utils/constants';
  */
 @Controller('stock-limit-up')
 export class StockLimitUpController {
-  constructor(
-    private readonly stockLimitUpService: StockLimitUpService,
-    private readonly itchService: ItchService,
-  ) {}
+  constructor(private readonly stockLimitUpService: StockLimitUpService) {}
 
   @Get()
   findAll() {
@@ -44,24 +40,24 @@ export class StockLimitUpController {
     return this.stockLimitUpService.removeOneDayStockLimitUp(date);
   }
 
-  @Get('crawl/:dateString')
-  async crawlStockLimitUp(@Param('dateString') dateString: string) {
-    // const date = new Date(dayjs(dateString).format(FORMAT));
-    const stocks = await this.itchService.crawlStockLimitUp(dateString);
+  // @Get('crawl/:dateString')
+  // async crawlStockLimitUp(@Param('dateString') dateString: string) {
+  //   // const date = new Date(dayjs(dateString).format(FORMAT));
+  //   const stocks = await this.itchService.crawlStockLimitUp(dateString);
 
-    for (let i = 0; i < stocks.length; i++) {
-      const stockRes =
-        await this.stockLimitUpService.findStockLimitUpByDateAndStock(
-          new Date(dayjs(dateString).format(FORMAT)),
-          stocks[i].stockCode,
-        );
+  //   for (let i = 0; i < stocks.length; i++) {
+  //     const stockRes =
+  //       await this.stockLimitUpService.findStockLimitUpByDateAndStock(
+  //         new Date(dayjs(dateString).format(FORMAT)),
+  //         stocks[i].stockCode,
+  //       );
 
-      if (stockRes && stockRes.id) {
-        this.stockLimitUpService.updateStockLimitUp(stockRes.id, stocks[i]);
-      } else {
-        this.stockLimitUpService.createStockLimitUp(stocks[i]);
-      }
-    }
-    // return this.stockLimitUpService.saveStockLimitUps(stocks);
-  }
+  //     if (stockRes && stockRes.id) {
+  //       this.stockLimitUpService.updateStockLimitUp(stockRes.id, stocks[i]);
+  //     } else {
+  //       this.stockLimitUpService.createStockLimitUp(stocks[i]);
+  //     }
+  //   }
+  //   // return this.stockLimitUpService.saveStockLimitUps(stocks);
+  // }
 }

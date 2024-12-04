@@ -90,6 +90,7 @@ export default function LimitUpPage() {
   const LimitUpTable = () => {
     return (
       <Table
+        size="small"
         columns={columns}
         dataSource={currentLimitUp}
         scroll={{ x: 'max-content' }}
@@ -102,7 +103,7 @@ export default function LimitUpPage() {
   }
 
   const chartOptions = useMemo(() => {
-    const dates = statistics.map((item) => {
+    const dates = statistics?.map((item) => {
       return dayjs(item.date).format(DATE_FORMAT)
     })
 
@@ -131,7 +132,7 @@ export default function LimitUpPage() {
         name: key,
         type: 'line',
         smooth: true,
-        data: statistics.map((item) => {
+        data: statistics?.map((item) => {
           return item[key]
         }),
       }

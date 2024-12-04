@@ -12,6 +12,8 @@ import { ItchModule } from './itch/itch.module';
 import { SectorTrendModule } from './sector-trend/sector-trend.module';
 import { StockLimitUpModule } from './stock-limit-up/stock-limit-up.module';
 import { StockLimitUpStatisticsModule } from './stock-limit-up-statistics/stock-limit-up-statistics.module';
+import { TaskModule } from './task/task.module';
+import { TradeDayModule } from './trade-day/trade-day.module';
 @Module({
   imports: [
     HelloModule,
@@ -21,16 +23,9 @@ import { StockLimitUpStatisticsModule } from './stock-limit-up-statistics/stock-
     ItchModule,
     StockLimitUpModule,
     StockLimitUpStatisticsModule,
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 5432,
-    //   username: 'postgres',
-    //   password: 'kaketsu',
-    //   database: 'stone',
-    //   entities: [__dirname + '/**/*.entities{.ts,.js}'],
-    //   synchronize: true, // 设置为 true 可以自动创建数据库表（仅用于开发环境）
-    // }),
+    SectorTrendModule,
+    TaskModule,
+    TradeDayModule,
 
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -69,7 +64,6 @@ import { StockLimitUpStatisticsModule } from './stock-limit-up-statistics/stock-
       //   ],
       // },
     }),
-    SectorTrendModule,
   ],
 })
 export class AppModule {}

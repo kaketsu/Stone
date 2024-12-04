@@ -34,7 +34,7 @@ export const getDashboardByDateRange = async (startDate:string, endDate: string)
 };
 
 export const crawlDashboardByDate = async (date: string): Promise<Dashboard> => {
-  return request(`/dashboard/crawl/${date}`, {
+  return request(`/itch/dashboard/${date}`, {
     method: "GET",
   });
 };

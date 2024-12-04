@@ -37,7 +37,6 @@ export class StockLimitUpStatisticsService {
     const yesterdayStocks =
       await this.stockLimitUpService.findStockLimitUpByDate(dateBefore);
 
-    // console.log(todayStocks, yesterdayStocks);
     const stocksBoth = [];
     for (let i = 0; i < yesterdayStocks.length; i++) {
       const exist = todayStocks.find(
@@ -91,14 +90,25 @@ export class StockLimitUpStatisticsService {
     return this.stockLimitUpStatisticsRepository.save(stockLimitUpStatistics);
   }
 
-  findOneByDate(date: Date): Promise<StockLimitUpStatistics> {
+  findOneByDate(dateString: string): Promise<StockLimitUpStatistics> {
+    const date = new Date(dayjs(dateString).format(FORMAT));
     return this.stockLimitUpStatisticsRepository.findOneBy({ date });
   }
+
+  deleteOneByDate(dateString: string): Promise<any> {
+    const date = new Date(dayjs(dateString).format(FORMAT));
+    return this.stockLimitUpStatisticsRepository.delete({ date });
+  }
+
   findAll(): Promise<StockLimitUpStatistics[]> {
     return this.stockLimitUpStatisticsRepository.find({
       order: {
         date: 'ASC', // 或者 'ASC' 进行升序排序
       },
     });
+  }
+
+  save(statistics): Promise<StockLimitUpStatistics> {
+    return this.stockLimitUpStatisticsRepository.save(statistics);
   }
 }

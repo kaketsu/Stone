@@ -3,8 +3,6 @@ import { DashboardService } from './dashboard.service';
 import { CreateDashboardDto } from './dto/create-dashboard.dto';
 import * as dayjs from 'dayjs';
 import { FORMAT } from 'src/utils/constants';
-import { ItchService } from '../itch/itch.service';
-import { Dashboard } from 'src/dashboard/entities/dashboard.entity';
 
 // import { UpdateDashboardDto } from './dto/update-dashboard.dto';
 
@@ -16,10 +14,7 @@ import { Dashboard } from 'src/dashboard/entities/dashboard.entity';
  */
 @Controller('dashboard')
 export class DashboardController {
-  constructor(
-    private readonly dashboardService: DashboardService,
-    private readonly itchService: ItchService,
-  ) {}
+  constructor(private readonly dashboardService: DashboardService) {}
 
   /**
    * Post decorator represents method of request as we have used post decorator the method
@@ -88,58 +83,58 @@ export class DashboardController {
     return this.dashboardService.removeDashboard(+id);
   }
 
-  @Get('crawl/:date')
-  async crawlDashboard(@Param('date') dateString: string) {
-    const date = new Date(dayjs(dateString).format(FORMAT));
+  // @Get('crawl/:date')
+  // async crawlDashboard(@Param('date') dateString: string) {
+  //   const date = new Date(dayjs(dateString).format(FORMAT));
 
-    if (dayjs(dateString).day() === 0 || dayjs(dateString).day() === 6) {
-      return 'weekend';
-    }
+  //   if (dayjs(dateString).day() === 0 || dayjs(dateString).day() === 6) {
+  //     return 'weekend';
+  //   }
 
-    const newDashboard = new Dashboard();
-    newDashboard.date = date;
-    const res = await this.itchService.crawlDataFromDashboard();
-    if (res.date !== dateString) {
-      return {};
-    }
+  //   const newDashboard = new Dashboard();
+  //   newDashboard.date = date;
+  //   const res = await this.itchService.crawlDashboard();
+  //   if (res.date !== dateString) {
+  //     return {};
+  //   }
 
-    newDashboard.limitUpCount1 = res.limitUp?.count1;
-    newDashboard.limitUpCount2 = res.limitUp?.count2;
-    newDashboard.limitUpCount3 = res.limitUp?.count3;
-    newDashboard.limitUpCountBeforeCallAuction =
-      res.limitUp?.countBeforeCallAuction;
-    newDashboard.limitUpCount =
-      res.limitUp?.count1 + res.limitUp?.count2 + res.limitUp?.count3;
-    newDashboard.allLockUpAmount = res.limitUp.allAmount;
+  //   newDashboard.limitUpCount1 = res.limitUp?.count1;
+  //   newDashboard.limitUpCount2 = res.limitUp?.count2;
+  //   newDashboard.limitUpCount3 = res.limitUp?.count3;
+  //   newDashboard.limitUpCountBeforeCallAuction =
+  //     res.limitUp?.countBeforeCallAuction;
+  //   newDashboard.limitUpCount =
+  //     res.limitUp?.count1 + res.limitUp?.count2 + res.limitUp?.count3;
+  //   newDashboard.allLockUpAmount = res.limitUp.allAmount;
 
-    newDashboard.limitUpIndex = this.dashboardService.calcDashboardLimitUpIndex(
-      res.limitUp.count1,
-      res.limitUp.count2,
-      res.limitUp.count3,
-      res.limitUp.countBeforeCallAuction,
-    );
-    newDashboard.limitDownCount1 = res.limitDown?.count1;
-    newDashboard.limitDownCount2 = res.limitDown?.count2;
-    newDashboard.limitDownCount3 = res.limitDown?.count3;
-    newDashboard.limitDownCountBeforeCallAuction =
-      res.limitDown?.countBeforeCallAuction;
-    newDashboard.limitDownCount =
-      res.limitDown?.count1 + res.limitDown?.count2 + res.limitDown?.count3;
+  //   newDashboard.limitUpIndex = this.dashboardService.calcDashboardLimitUpIndex(
+  //     res.limitUp.count1,
+  //     res.limitUp.count2,
+  //     res.limitUp.count3,
+  //     res.limitUp.countBeforeCallAuction,
+  //   );
+  //   newDashboard.limitDownCount1 = res.limitDown?.count1;
+  //   newDashboard.limitDownCount2 = res.limitDown?.count2;
+  //   newDashboard.limitDownCount3 = res.limitDown?.count3;
+  //   newDashboard.limitDownCountBeforeCallAuction =
+  //     res.limitDown?.countBeforeCallAuction;
+  //   newDashboard.limitDownCount =
+  //     res.limitDown?.count1 + res.limitDown?.count2 + res.limitDown?.count3;
 
-    const res2 = await this.itchService.crawDataFromIndex();
-    Object.assign(newDashboard, res2);
+  //   const res2 = await this.itchService.crawlDashboard();
+  //   Object.assign(newDashboard, res2);
 
-    const currentDashboard =
-      await this.dashboardService.findDashboardByDate(date);
-    if (currentDashboard) {
-      this.dashboardService.updateDashboard(
-        currentDashboard.id,
-        Object.assign(currentDashboard, newDashboard),
-      );
-    } else {
-      this.dashboardService.createDashboard(newDashboard);
-    }
+  //   const currentDashboard =
+  //     await this.dashboardService.findDashboardByDate(date);
+  //   if (currentDashboard) {
+  //     this.dashboardService.updateDashboard(
+  //       currentDashboard.id,
+  //       Object.assign(currentDashboard, newDashboard),
+  //     );
+  //   } else {
+  //     this.dashboardService.createDashboard(newDashboard);
+  //   }
 
-    return newDashboard;
-  }
+  //   return newDashboard;
+  // }
 }

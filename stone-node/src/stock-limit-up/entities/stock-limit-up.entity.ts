@@ -18,6 +18,15 @@ export class StockLimitUp {
   @Column()
   stockName: string;
 
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  price: number;
+
+  @Column({ default: 0, type: 'decimal', precision: 10, scale: 2 })
+  percentage: number;
+
+  @Column()
+  lastStockUpTime: string;
+
   @Column({ default: false })
   isCeilingLimitUp: boolean;
 
